@@ -3,10 +3,11 @@ using System.Linq;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebExtentions.DependencyInjection;
 
 namespace Controllers.Config
 {
-    public class Autofac : Module
+    public class Autofac : AutofacBase
     {
 
         protected override void Load(ContainerBuilder builder)
