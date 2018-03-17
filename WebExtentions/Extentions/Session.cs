@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using MessagePack;
+using MessagePack.Resolvers;
 
 namespace WebExtentions.Extentions
 {
@@ -67,7 +68,7 @@ namespace WebExtentions.Extentions
 
         public static void SetObjectUseMsgPack<T>(this ISession session, string key, T obj)
         {
-            session.Set(key, LZ4MessagePackSerializer.Serialize(obj));
+            session.Set(key, LZ4MessagePackSerializer.Serialize(obj, ContractlessStandardResolver.Instance));
         }
 
         public static T GetObjectUseMsgPack<T>(this ISession session, string key)
@@ -75,7 +76,7 @@ namespace WebExtentions.Extentions
             var data = session.Get(key);
             if (data == null)
                 return default(T);
-            return LZ4MessagePackSerializer.Deserialize<T>(data);
+            return LZ4MessagePackSerializer.Deserialize<T>(data, ContractlessStandardResolver.Instance);
         }
     }
 }
