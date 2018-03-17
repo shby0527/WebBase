@@ -2,12 +2,14 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using MessagePack;
 
 namespace WebExtentions.Extentions
 {
     public static class Session
     {
-        public static object GetObject(this ISession session, string key)
+        public static object GetObjectUseBinary(this ISession session, string key)
         {
             byte[] data = session.Get(key);
             if (data == null)
@@ -23,12 +25,12 @@ namespace WebExtentions.Extentions
             }
         }
 
-        public static T GetObject<T>(this ISession session, string key)
+        public static T GetObjectUseBinary<T>(this ISession session, string key)
         {
-            return (T)GetObject(session, key);
+            return (T)GetObjectUseBinary(session, key);
         }
 
-        public static void SetObject(this ISession session, string key, object obj)
+        public static void SetObjectUseBinary(this ISession session, string key, object obj)
         {
             BinaryFormatter bf = new BinaryFormatter();
             using (MemoryStream ms = new MemoryStream())
@@ -38,6 +40,42 @@ namespace WebExtentions.Extentions
                 ms.Close();
                 session.Set(key, data);
             }
+        }
+
+        public static object GetObjectUseJson(this ISession session, string key)
+        {
+            string json = session.GetString(key);
+            if (string.IsNullOrEmpty(json))
+                return null;
+            return JsonConvert.DeserializeObject(json);
+        }
+
+        public static T GetObjectUseJson<T>(this ISession session, string key)
+        {
+            string json = session.GetString(key);
+            if (string.IsNullOrEmpty(json))
+                return default(T);
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public static void SetObjectUseJson(this ISession session, string key, object obj)
+        {
+            string json = JsonConvert.SerializeObject(obj);
+            session.SetString(key, json);
+        }
+
+
+        public static void SetObjectUseMsgPack<T>(this ISession session, string key, T obj)
+        {
+            session.Set(key, LZ4MessagePackSerializer.Serialize(obj));
+        }
+
+        public static T GetObjectUseMsgPack<T>(this ISession session, string key)
+        {
+            var data = session.Get(key);
+            if (data == null)
+                return default(T);
+            return LZ4MessagePackSerializer.Deserialize<T>(data);
         }
     }
 }
