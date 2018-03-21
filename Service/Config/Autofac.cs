@@ -1,10 +1,11 @@
+using Autofac;
 using System;
 using System.Linq;
-using Autofac;
+using WebExtentions.DependencyInjection;
 
 namespace Service.Config
 {
-    public class Autofac : Module
+    public class Autofac : AutofacBase
     {
         protected override void Load(ContainerBuilder builder)
         {

@@ -3,11 +3,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2"/>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj"/>
-    <ProjectReference Include="..\WebExtentions\WebExtentions.csproj"/>
+    <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj" />
+    <ProjectReference Include="..\WebExtentions\WebExtentions.csproj" />
   </ItemGroup>
 </Project>

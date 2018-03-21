@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebBase.Filters
 {
-    public class ErrorFilter : IFilterMetadata, IAsyncExceptionFilter, IExceptionFilter
+    public class ExceptionFilter : IFilterMetadata, IAsyncExceptionFilter, IExceptionFilter
     {
         private ILogger logger;
 
         private IHostingEnvironment _environment;
 
-        public ErrorFilter(ILogger<ErrorFilter> factory, IHostingEnvironment env)
+        public ExceptionFilter(ILogger<ExceptionFilter> factory, IHostingEnvironment env)
         {
             logger = factory;
             _environment = env;

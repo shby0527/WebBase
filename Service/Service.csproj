@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-     <PackageReference Include="Autofac" Version="4.6.2" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Entitys\Entitys.csproj" />
     <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj" />
+    <ProjectReference Include="..\WebExtentions\WebExtentions.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
