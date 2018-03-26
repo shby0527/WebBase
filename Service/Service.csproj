@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1"/>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.2"/>
@@ -8,7 +11,4 @@
     <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj"/>
     <ProjectReference Include="..\WebExtentions\WebExtentions.csproj"/>
   </ItemGroup>
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
 </Project>

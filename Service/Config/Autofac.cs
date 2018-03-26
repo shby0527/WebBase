@@ -1,9 +1,9 @@
-using Autofac;
 using System;
 using System.Linq;
 using Autofac;
 using Entitys.Interface;
 using Service.EntityConfig;
+using WebExtentions.DependencyInjection;
 
 namespace Service.Config
 {
