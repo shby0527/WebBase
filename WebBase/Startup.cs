@@ -17,7 +17,6 @@ using WebBase.Autofac;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using WebBase.Filters;
-using Entitys.EntityConfig;
 using WebExtentions.DependencyInjection;
 
 namespace WebBase
@@ -83,11 +82,6 @@ namespace WebBase
             //注册EF Core
             string conStr = Configuration.GetConnectionString("Mysql");
 
-
-            services.AddEntityFrameworkMySql();
-            //services.AddDbContext<EntityFrameworkDbContext>(ss => ss.UseMySql(conStr)
-            //                                                        .UseLoggerFactory(LoggerFactory));
-            services.AddDbContextPool<EntityConfig>(ss => ss.UseMySql(conStr).UseLoggerFactory(LoggerFactory));
 
             //如果使用SqlServer，则替换上两句为下面两句
             //services.AddEntityFrameworkSqlServer();

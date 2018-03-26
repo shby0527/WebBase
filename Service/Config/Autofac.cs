@@ -1,7 +1,9 @@
 using Autofac;
 using System;
 using System.Linq;
-using WebExtentions.DependencyInjection;
+using Autofac;
+using Entitys.Interface;
+using Service.EntityConfig;
 
 namespace Service.Config
 {
@@ -16,6 +18,12 @@ namespace Service.Config
                 .AsSelf()
                 .PropertiesAutowired()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<EntityConfigContext>()
+                .PropertiesAutowired()
+                .InstancePerLifetimeScope()
+                .AsSelf()
+                .As<IDbPool>();
         }
     }
 }
