@@ -18,13 +18,16 @@ namespace WebBase
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureLogging(ss=>{
-                    ss.ConfigureNLog("nlog.config");
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            NLogBuilder.ConfigureNLog("nlog.config");
+            return WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(ss =>
+                {
                     ss.SetMinimumLevel(LogLevel.Trace);
                 }).UseStartup<Startup>()
-                //.UseNLog()
+                .UseNLog()
                 .Build();
+        }
     }
 }

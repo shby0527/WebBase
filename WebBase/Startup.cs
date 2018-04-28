@@ -54,7 +54,7 @@ namespace WebBase
             //services.AddDistributedMemoryCache();
             // services.AddMysqlCache(ss => ss.ConnectionString = Configuration.GetConnectionString("Mysql"));
             //添加Session支持
-            // services.AddSession();
+            services.AddSession();
 
             //注册跨域资源共享
             // services.AddCors();
@@ -184,7 +184,8 @@ namespace WebBase
                 app.UseDeveloperExceptionPage();
             }
 
-            
+            app.UseStaticFiles();
+            app.UseSession();
 
             IServiceProvider provider = app.ApplicationServices;
             if (serviceInjPart != null)
