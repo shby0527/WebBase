@@ -20,10 +20,10 @@ namespace WebBase
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            NLogBuilder.ConfigureNLog("nlog.config");
             return WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging(ss =>
                 {
+                    NLogBuilder.ConfigureNLog("nlog.config");
                     ss.SetMinimumLevel(LogLevel.Trace);
                 }).UseStartup<Startup>()
                 .UseNLog()

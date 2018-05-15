@@ -1,4 +1,5 @@
 using Autofac;
+using Autofac.Extras.DynamicProxy;
 using System;
 
 namespace WebExtentions.DependencyInjection
@@ -10,7 +11,14 @@ namespace WebExtentions.DependencyInjection
 
         protected override void Load(ContainerBuilder builder)
         {
-
+            //默认注册本程序集下所有的类为服务
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired()
+                .EnableClassInterceptors()
+                .EnableInterfaceInterceptors()
+                .AsSelf();
         }
     }
 }

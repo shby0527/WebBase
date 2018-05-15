@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Autofac;
+using Autofac.Extras.DynamicProxy;
 using Entitys.Interface;
 using Service.EntityConfig;
 using WebExtentions.DependencyInjection;
@@ -11,13 +12,16 @@ namespace Service.Config
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var services = from p in ThisAssembly.GetTypes() where p.FullName.StartsWith("Service.Services") && !p.IsNested select p;
+            //var services = from p in ThisAssembly.GetTypes() where p.FullName.StartsWith("Service.Services") && !p.IsNested select p;
 
-            builder.RegisterTypes(services.ToArray())
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(p => p.FullName.StartsWith("Service.Services") && !p.IsNested)
                 .AsImplementedInterfaces()
                 .AsSelf()
                 .PropertiesAutowired()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .InterceptedBy("sampleInterceptor")
+                .EnableClassInterceptors();
 
             builder.RegisterType<EntityConfigContext>()
                 .PropertiesAutowired()

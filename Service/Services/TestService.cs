@@ -1,3 +1,4 @@
+using Autofac.Extras.DynamicProxy;
 using Entitys.Interface;
 using Service.Interface.Test;
 
@@ -8,7 +9,7 @@ namespace Service.Services
 
         public IDbPool DbPool { get; set; }
 
-        public int GetAll()
+        public virtual int GetAll()
         {
             return DbPool == null ? 0 : 1;
         }

@@ -3,12 +3,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1"/>
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.2"/>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entitys\Entitys.csproj"/>
-    <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj"/>
-    <ProjectReference Include="..\WebExtentions\WebExtentions.csproj"/>
+    <ProjectReference Include="..\Entitys\Entitys.csproj" />
+    <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj" />
+    <ProjectReference Include="..\WebExtentions\WebExtentions.csproj" />
   </ItemGroup>
 </Project>
