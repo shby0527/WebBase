@@ -1,3 +1,2 @@
-# Asp.Net Core WebBase With Vue Page
-
-this is for asp.net WebBase with Autofac
+# Umi Web Base For .NET Web API
+web base for .net web api
