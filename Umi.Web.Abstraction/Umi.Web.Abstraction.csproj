@@ -1,11 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <ProjectReference Include="..\Umi.Web.Metadatas\Umi.Web.Metadatas.csproj" />
+    <ProjectReference Include="..\Umi.Web.Metadatas\Umi.Web.Metadatas.csproj"/>
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.2"/>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0"/>
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0"/>
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
 </Project>
