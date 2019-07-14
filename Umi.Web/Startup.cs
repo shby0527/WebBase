@@ -75,7 +75,7 @@ namespace Umi.Web
                 {
                     HttpOnly = true,
                     IsEssential = true,
-                    Name = ".We",
+                    Name = ".Umi.Session",
                     SameSite = SameSiteMode.None
                 };
                 p.IdleTimeout = TimeSpan.FromMinutes(40);
