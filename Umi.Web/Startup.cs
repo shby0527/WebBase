@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Autofac.Core;
-using Autofac.Builder;
+using Autofac.Extras.DynamicProxy;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using System.Text.RegularExpressions;
@@ -25,6 +20,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Umi.Web.Metadatas.Configurations;
 using Umi.Web.Filters;
 using Umi.Web.Metadatas.Attributes;
+using Castle.DynamicProxy;
+using Umi.Web.Abstraction.Aspect;
 
 namespace Umi.Web
 {
@@ -143,6 +140,14 @@ namespace Umi.Web
             //创建Autofac依赖注入容器,替换系统自带的默认依赖注入容器
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterAssemblyModules(typeof(Startup).Assembly);
+            containerBuilder.RegisterType<TimeLoggerInterceptor>()
+            .As<IInterceptor>()
+            .Named("TimeLoggerInterceptor", typeof(IInterceptor))
+            .PropertiesAutowired();
+            containerBuilder.RegisterType<ExceptionInterceptor>()
+            .As<IInterceptor>()
+            .Named("ExceptionInterceptor", typeof(IInterceptor))
+            .PropertiesAutowired();
             LoadAndRegister(containerBuilder, mvc, services);
             containerBuilder.Populate(services);
             var container = containerBuilder.Build();
@@ -187,6 +192,7 @@ namespace Umi.Web
                             logger.LogInformation($"Loading assembly {file.FullName}");
                             Assembly assembly = Assembly.LoadFrom(file.FullName);
                             mvc.AddApplicationPart(assembly);
+                            // 搜索ServiceAttribute注解的类进行注入
                             containerBuilder.RegisterAssemblyModules(assembly);
                             var all = from p in assembly.GetTypes()
                                       where !p.IsAbstract &&
@@ -229,6 +235,38 @@ namespace Umi.Web
                     logger.LogWarning($"path {path} not exist ");
                 }
             }
+        }
+
+        private void RegisterTypes(ContainerBuilder builder, Assembly assembly)
+        {
+            assembly.GetTypes()
+            .Select(e =>
+            {
+                IEnumerable<ServiceAttribute> services = e.GetCustomAttributes<ServiceAttribute>();
+                if (!services.Any())
+                {
+                    return e;
+                }
+                ServiceAttribute service = services.First();
+                List<string> list = new List<string>()
+                {
+                    [0] = "TimeLoggerInterceptor",
+                    [1] = "ExceptionInterceptor"
+                };
+                string[] interceptors = service.Interceptors ?? new string[0];
+                list.AddRange(interceptors);
+                var register = builder.RegisterType(e)
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+                if (!string.IsNullOrEmpty(service.Name))
+                {
+                    register = register.Named(service.Name, e);
+                }
+                register.PropertiesAutowired()
+                .EnableInterfaceInterceptors()
+                .InterceptedBy(list.ToArray());
+                return e;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
