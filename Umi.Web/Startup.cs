@@ -48,7 +48,7 @@ namespace Umi.Web
         {
             //注册Session支持
             //Session 存储方式可以使用如下方式
-            //无优化存储内存
+            //非分布式的
             services.AddMemoryCache();
 
             if (configuration.GetValue<bool>("UseRedis"))
