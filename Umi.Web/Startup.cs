@@ -108,7 +108,6 @@ namespace Umi.Web
             });
             //注册跨域资源共享
             // services.AddCors();
-
             services.AddSingleton<ExceptionFilter>();
             //替换Controller为服务实现,必须放在 services.AddMvc() 之前
             services.Replace(ServiceDescriptor.Scoped<IControllerActivator, ServiceBasedControllerActivator>());
@@ -192,6 +191,7 @@ namespace Umi.Web
                             logger.LogInformation($"Loading assembly {file.FullName}");
                             Assembly assembly = Assembly.LoadFrom(file.FullName);
                             mvc.AddApplicationPart(assembly);
+                            RegisterTypes(containerBuilder, assembly);
                             // 搜索ServiceAttribute注解的类进行注入
                             containerBuilder.RegisterAssemblyModules(assembly);
                             var all = from p in assembly.GetTypes()
@@ -248,11 +248,9 @@ namespace Umi.Web
                     return e;
                 }
                 ServiceAttribute service = services.First();
-                List<string> list = new List<string>()
-                {
-                    [0] = "TimeLoggerInterceptor",
-                    [1] = "ExceptionInterceptor"
-                };
+                List<string> list = new List<string>();
+                list.Add("TimeLoggerInterceptor");
+                list.Add("ExceptionInterceptor");
                 string[] interceptors = service.Interceptors ?? new string[0];
                 list.AddRange(interceptors);
                 var register = builder.RegisterType(e)
@@ -260,13 +258,16 @@ namespace Umi.Web
                 .InstancePerLifetimeScope();
                 if (!string.IsNullOrEmpty(service.Name))
                 {
-                    register = register.Named(service.Name, e);
+                    foreach (var item in e.GetInterfaces())
+                    {
+                        register = register.Named(service.Name, item);
+                    }
                 }
                 register.PropertiesAutowired()
                 .EnableInterfaceInterceptors()
                 .InterceptedBy(list.ToArray());
                 return e;
-            });
+            }).ToArray();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Umi.Web.Abstraction\Umi.Web.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Umi.Web.Metadatas\Umi.Web.Metadatas.csproj" />
+  </ItemGroup>
+
+</Project>
